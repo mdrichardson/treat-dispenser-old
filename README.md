@@ -12,7 +12,7 @@ This is the code executed on a Particle Photon (similar to an Arduino--uses C/C+
 * Dispense treat on customizeable intervals
 * Dispense treat on customizeable schedule
 * Dispense treats or meals in customizeable sizes/amounts
-* Optionally play an audible "waring tone" of customizeable frequency before dispensing
+* Optionally play an audible "warning tone" of customizeable frequency before dispensing
   * When I first used this, my dog was scared of the sound of the servo. Adding the "warning" tone helped
 * Track how often your dog barks so that you can not dispense a treat if they are barking too much
   * You need something else to track the barks and send the command to the Photon. I used a webcam that executed a bark tracking script on my PC
