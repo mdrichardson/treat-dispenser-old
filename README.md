@@ -60,10 +60,10 @@ These are the 3D-printed parts for the auger, which is used to dispense the trea
 
 ## To-Do
 
-[ ] Host the web app again (I took it down after no longer using it)
-[ ] Simplify the Photon code. Schdeuling features aren't really necessary.
-[ ] Write my own user authentication database (currently uses [Auth0](auth0.com))
+- [ ] Host the web app again (I took it down after no longer using it)
+- [ ] Simplify the Photon code. Schdeuling features aren't really necessary.
+- [ ] Write my own user authentication database (currently uses [Auth0](auth0.com))
 
 ## Needs to be done, but won't be unless I pick the project back up
 
-[ ] 3D print a gravity-fed system
+- [ ] 3D print a gravity-fed system
