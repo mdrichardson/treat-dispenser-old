@@ -133,8 +133,8 @@ int mealDispense;
 int tonePin = D1;
 int toneDuration = 100;
 int toneDelay = 750;
-int tone1 = 1568; //G6 tone
-int tone2 = 2093; //G3 tone
+int tone1 = 1568; // Frequency for G6 tone
+int tone2 = 2093; // Frequency for G3 tone
 int servingDelay = 750;
 int useTone = 1;
 
