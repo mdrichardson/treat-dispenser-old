@@ -62,8 +62,8 @@ These are the 3D-printed parts for the auger, which is used to dispense the trea
 
 ## To-Do
 
-- [ ] Clean up the web app code
-- [ ] Host the web app again (I took it down after no longer using it)
+- [X] Comment the web app code
+- [ ] Host the web app again (I took it down and deleted Auth0 account after no longer using it)
 - [ ] Simplify the Photon code. Schdeuling features aren't really necessary.
 - [ ] Write my own user authentication database (currently uses [Auth0](http://www.auth0.com))
 
