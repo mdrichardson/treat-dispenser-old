@@ -1,6 +1,6 @@
 # Treat Dispenser and Web App
 
-This is a dog treat dispenser that dispenses treats based off of input from a progressive web app, time intervals, and or feeding schedule. The dispenser, itself, is based lossely off of [this model.](https://www.thingiverse.com/thing:27854)
+This is a dog treat dispenser that dispenses treats based off of input from a progressive web app, time intervals, and or feeding schedule. The dispenser, itself, is based loosely off of [this model.](https://www.thingiverse.com/thing:27854)
 
 ## TreatDispenser.ino
 
@@ -9,10 +9,10 @@ This is the code executed on a Particle Photon (similar to an Arduino--uses C/C+
 ### Features
 
 * Dispense treat on command
-* Dispense treat on customizeable intervals
-* Dispense treat on customizeable schedule
-* Dispense treats or meals in customizeable sizes/amounts
-* Optionally play an audible "warning tone" of customizeable frequency before dispensing
+* Dispense treat on customizable intervals
+* Dispense treat on customizable schedule
+* Dispense treats or meals in customizable sizes/amounts
+* Optionally play an audible "warning tone" of customizable frequency before dispensing
   * When I first used this, my dog was scared of the sound of the servo. Adding the "warning" tone helped
 * Track how often your dog barks so that you can not dispense a treat if they are barking too much
   * You need something else to track the barks and send the command to the Photon. I used a webcam that executed a bark tracking script on my PC
