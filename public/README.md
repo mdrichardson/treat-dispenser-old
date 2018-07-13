@@ -8,6 +8,8 @@ This is a progressive web app used to control the Particle Photon treat dispense
   * Assets are stored for offline use. Only variables and webcam feed update
 * User authentication via [auth0](http://www.auth0.com)
 * Webcam display (using user authentication in auth0 database)
+  * Some browsers stop loading the video when tab is unfocused. There's some JavaScript that keeps the video synced
+* Notifications for successful/failed interactions with Photon
 * Treat Dispenser Function Control:
   * Treat dispense
   * Meal dispense
