@@ -21,19 +21,22 @@
         return $sce.trustAsResourceUrl(url);
     };
 }])
-  
+
+// Factory for interacting with Photon
 .factory('variableService', ['$http', 'NotificationFactory', '$rootScope', 'store', function($http, NotificationFactory, $rootScope, store) {
+    // Get access token from Auth0 account
     var accessToken = function(){
         var profile = store.get('profile');
         return profile.user_metadata.particleAccessToken;
     };
+    // Get Photon ID from Auth0 account
     var apiURL = function() {
         var profile = store.get('profile');
         if (profile != null) {
             return "https://api.particle.io/v1/devices/" + profile.user_metadata.particleDevice_ID + "/";
         }        
     }
-      
+    // Get variable values from the Photon
     var getVariable = function(getVar) {
         var userProfile = store.get('profile');
         return $http.get(apiURL()+  getVar + '?access_token=' + accessToken()).then(function (data) {
@@ -43,7 +46,7 @@
         throw err;                  
     });
     };
-    
+    // Call Photon functions
     var functionCall = function functionCall(functionName, functionArg) {
         var userProfile = store.get('profile');
         if (functionName == 'auger'){
@@ -55,6 +58,7 @@
                 data: $.param({args: functionArg}),
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 })
+                // Disable/Enable auger function while auger is/not in use
                 .success(function(data, status, headers, config) {
                     console.log(functionName + ' performed succesfully: ' + functionArg);
                     $(".button.auger").removeClass('disabled');
@@ -64,7 +68,7 @@
                     $(".button.auger").removeClass('disabled');
                 });
     };
-
+    // Display notifications in web app
     var notifSet = new NotificationFactory({
         position: 'top-right',
         'zf-swipe-close': 'right'
@@ -86,10 +90,11 @@
         notify: notify
     };
 }])
-  
+  // Home page controller
   .controller('homeCtrl', ['$scope', '$rootScope', '$state', '$interval', '$sce', 'variableService', 'store', function($scope, $rootScope, $state, $interval, $sce, variableService, store) {
     $scope.userProfile = store.get('profile');
     moment().format("hh:mm:ss");
+    // Update last treat dispense time
     $scope.getLast = function() {
         variableService.getVariable("last").then(function (result) {
         if (moment.unix(result).fromNow() === "Invalid date") {
@@ -101,6 +106,7 @@
             console.log('An error occurred while getting variable: ', err);
     });
     };
+    // Dispense treat
     $scope.treat = function() {
       variableService.functionCall("auger","treat").then(function (result) {
           variableService.notify("Treat Dispense","Successful","success","3000");
@@ -110,6 +116,7 @@
           variableService.notify("Treat Dispense","Failed","alert","3000");
       });      
     };
+    // Dispense meal
     $scope.meal = function() {
         variableService.functionCall("auger","meal").then(function (result) {
           variableService.notify("Meal Dispense","Successful","success","3000");
@@ -119,14 +126,16 @@
         variableService.notify("Meal Dispense","Failed","alert","3000");
       });      
     };
+    // Play webcam video
     $scope.loadVideo = function() {
         var userProfile = store.get('profile');
-        return "https://syndac.no-ip.biz:8100/live/0?authToken=" + userProfile.user_metadata.videoAuthToken;
+        return "https://xxxxx:##/live/0?authToken=" + userProfile.user_metadata.videoAuthToken; // Need to replace with ip address from user database, once created
     };
     $scope.getLast();
     $interval(function(){
       $scope.getLast();
     }, 5000);
+    // Ensure video stays properly synced
     $interval(function(){
       if (document.getElementById("video_0") != null) {
         var vid = document.getElementById("video_0");
@@ -140,13 +149,14 @@
     }, 5000);  
     
   }])
-  
+  // Status bar controller - Tracks current status of Photon
   .controller('statusCtrl', ['$scope', '$rootScope', '$state', 'variableService', function($scope, $rootScope, $state, variableService) {
     $rootScope.status = 'Connecting...';
     $rootScope.activity = 'Idle';      
   }])
-  
+  // Settings page controller
    .controller('settingsCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'variableService', function($scope, $rootScope, $state, $timeout, variableService) {
+    // Update variables from Photon and apply CSS badges, appropriately
     $scope.getSizes = function() {
         variableService.getVariable("sizes").then(function (data) {
           var sizes = JSON.parse(data);
@@ -162,13 +172,15 @@
             console.log('An error occurred while getting mealSize: ', err);
     });
     };
+    // Track when connected to Photon. Settings are unavailable when disconnected
     $scope.showSettings = function() {
         if ($rootScope.status == "Connected") {
             return true;
         } else {
-            return true; // CHANGE LATER
+            return false; // Set to return true for testing purposes
         }
     };
+    // Update Interval settings
     $scope.showIntervalSelect = function() {
         if ($scope.intervalSEon == 1) {
             return true;
@@ -176,6 +188,7 @@
             return false;
         }
     } 
+    // Update Treat Size settings
     $scope.treat = function(size) {
       variableService.functionCall("setSizes", "treat," + size).then(function (result) {
           $scope.getSizes();
@@ -183,6 +196,7 @@
           console.log('Error setting treatSize: ', err);
       });      
     };
+    // Update Meal Size settings
     $scope.meal = function(size) {
       variableService.functionCall("setSizes","meal," + size).then(function (result) {
           $scope.getSizes();
@@ -190,14 +204,13 @@
           console.log('Error setting mealSize: ', err);
       });      
     };
-
-// TO DO: Figure out how to display interval start/end. Figure out how to send the changes to Photon
-
+    // Toggle Interval Off
     $scope.stopInterval = function() {
       $scope.intervalToggle = false;
       variableService.functionCall("setInterval","on,0");
       variableService.notify("Interval","Turned Off","success","3000");
     };
+    // Get Interval settings
     $scope.getIntervals = function() {
         variableService.getVariable("intervals").then(function (data) {
         var intervals = JSON.parse(data);
@@ -213,6 +226,7 @@
             } else {
                 $scope.intervalToggle = false;
             }
+        // Deal with H:MM vs HH:MM
         if ($scope.intervalStart.length == 3)
         {
             $scope.intervalStart = 0 + $scope.intervalStart;
@@ -221,10 +235,12 @@
         {
             $scope.intervalEnd = 0 + $scope.intervalEnd;
         }
+        // Break it up into hours and minutes
         $scope.intervalStartHours = $scope.intervalStart.substring(0,2);
         $scope.intervalStartMinutes = $scope.intervalStart.substring(2);
         $scope.intervalEndHours = $scope.intervalEnd.substring(0,2);
         $scope.intervalEndMinutes = $scope.intervalEnd.substring(2);
+        // Figure out AM/PM
         if (parseInt($scope.intervalStartHours) > 12)
         {
           $scope.intervalStartHours = String(parseInt($scope.intervalStartHours) - 12);
@@ -251,6 +267,7 @@
             console.log('An error occurred while getting intervals: ', err);
     });
     };
+    // Toggle Interval On/Off and display alerts if Times are invalid
     $scope.toggleInterval = function(){
         $scope.intervalOK = true;
         if ($scope.intervalToggle === true) {
@@ -281,6 +298,7 @@
             $scope.stopInterval();
         }
     };
+    // Set the interval
     $scope.interval = function(cmd) {
       variableService.functionCall("setInterval",cmd).then(function (result) {
           $scope.getIntervals();
@@ -288,9 +306,11 @@
           console.log('Error setting Intervals: ', err);
       });      
     };
+    // Set Interval Start and End Times
     $scope.intervalSE = function(category,type,value) {
       $scope.stopInterval();
       if (category == "start")
+      // Convert to time format Photon understands. Sends hours and minutes separately
       {
         if (type == "ampm")
         {
@@ -375,6 +395,7 @@
         });
       }
     };
+    // Sets dispensing interval time
     $scope.intervalTime = function(unit, value) {
       $scope.stopInterval();
       variableService.functionCall("setInterval",unit + ',' + value).then(function (result) {
@@ -386,8 +407,9 @@
     $scope.getSizes();
     $scope.getIntervals();
   }])
-  
+  // Debug controller
   .controller('debugCtrl', ['$scope', '$state', 'variableService', function($scope, $state, variableService) {
+    // Functions are pretty self-explanatory
     $scope.load = function() {
       variableService.functionCall("auger","load");
       variableService.notify("Loading","","success","3000");
@@ -417,10 +439,14 @@
         variableService.notify("Playing Tone","","success","3000");
     };
   }])
+
+// Login Controller - currently uses auth0
   .controller('loginCtrl', ['$scope', 'auth', 'store', function ($scope, auth, store) {
     $scope.login = function () {
+    // Prior to login
     $scope.message = 'loading...';
     $scope.loading = true;
+    // Login
      auth.signin({
          sso: false,
          connection: 'TreatDispenserDB',
@@ -431,7 +457,7 @@
          }
         }, onLoginSuccess, onLoginFailed);
     };
-    
+    // If login successful, set user variables
     function onLoginSuccess(profile, token) {
       $scope.message = '';
       store.set('profile', profile);
@@ -439,6 +465,7 @@
       $scope.userProfile = profile;    
       $scope.loading = false;    
     }
+    // If not successful, alert user
     function onLoginFailed() {
       $scope.message.text = 'invalid credentials';
       $scope.loading = false;
@@ -544,7 +571,7 @@
     }
   });
   }
-  
+// ServiceWorker for progressive web app -- Currently disabled for testing
    /*if ('serviceWorker' in navigator) {
     navigator.serviceWorker
              .register('./service-worker.js')
