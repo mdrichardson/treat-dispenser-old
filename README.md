@@ -41,7 +41,7 @@ This is the code executed on a Particle Photon (similar to an Arduino--uses C/C+
 
 ## public (folder)
 
-This is the progressive web app. See the `README.md` inside it for details
+This is the progressive web app. See the [`README.md`](https://github.com/mdrichardson/treat-dispenser/blob/master/public/README.md) inside it for details
 
 ## auger*.stl
 
