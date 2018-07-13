@@ -53,6 +53,7 @@ int intImmediate = 1;
 int intervalFirst = 1;
 
 char intervals[256];
+// send the interval values in json format
 char *getIntervals()
 {
     sprintf(intervals,"{\"on\": %d, \"SE\": %d, \"start\": %d, \"end\": %d, \"min\": %d, \"hr\": %d, \"imm\": %d}"
@@ -86,6 +87,7 @@ int schedFri = 0;
 int schedSat = 0;
 
 char scheduleInfo[256];
+// send the schedule values in json format
 char *getSchedInfo()
 {
     sprintf(scheduleInfo,"{\"on\": %d, \"t1on\": %d, \"t2on\": %d, \"t3on\": %d, \"t1s\": %d, \"t2s\": %d, \"t3s\": %d, \"t1\": %d, \"t2\": %d, \"t3\": %d}",scheduleOn,schedTime1On,schedTime2On,schedTime3On,schedTime1S,schedTime2S,schedTime3S,schedTime1,schedTime2,schedTime3);
@@ -93,6 +95,7 @@ char *getSchedInfo()
 }
 
 char scheduleDays[256];
+// send the schedule day values in json format
 char *getSchedDays()
 {
     sprintf(scheduleDays,"{\"sun\": %d, \"mon\": %d, \"tue\": %d, \"wed\": %d, \"thu\": %d, \"fri\": %d, \"sat\": %d}",schedSun,schedMon,schedTue,schedWed,schedThu,schedFri,schedSat);
@@ -110,6 +113,7 @@ int treatSize = 0; //0=S,1=M,2=L
 int mealSize = 0;
 
 char sizes[256];
+// send the size values in json format
 char *getSizes()
 {
     sprintf(sizes,"{\"treat\": %d, \"meal\": %d}",treatSize,mealSize);
@@ -129,8 +133,8 @@ int mealDispense;
 int tonePin = D1;
 int toneDuration = 100;
 int toneDelay = 750;
-int tone1 = 1568;
-int tone2 = 2093; //G3
+int tone1 = 1568; //G6 tone
+int tone2 = 2093; //G3 tone
 int servingDelay = 750;
 int useTone = 1;
 
@@ -140,6 +144,7 @@ int useTone = 1;
 #
 ##################################################*/
 char debugServo[256];
+// send the debug values in json format
 char *getDebugServo()
 {
     sprintf(debugServo,"{\"stop\": %d, \"push\": %d, \"pull\": %d, \"pullD\": %d, \"maxD\": %d, \"loadD\": %d, \"treatD\": %d, \"mealD\": %d}"
@@ -147,6 +152,7 @@ char *getDebugServo()
     return debugServo;
 }
 char debugTone[256];
+// send the tone values in json format
 char *getDebugTone()
 {
     sprintf(debugTone,"{\"duration\": %d, \"toneD\": %d, \"tone1\": %d, \"tone2\": %d, \"servingD\": %d, \"use\": %d}"
@@ -347,6 +353,7 @@ void playTone()
 #                  Servo functions
 #
 ##################################################*/
+// stop the servo
 void end()
 {
     run = 0;
@@ -355,6 +362,7 @@ void end()
     Particle.publish("activity", "Idle");
 }
 
+// dispense treats
 void treats()
 {
     if (treatSize == 0)
@@ -372,6 +380,7 @@ void treats()
     noJam(treatDispense);
 }
 
+// dispense meals
 void meals()
 {
     if (mealSize == 0)
@@ -389,6 +398,7 @@ void meals()
     noJam(mealDispense);
 }
 
+// briefly reverse auger and push again to prevent jams
 void noJam(int amount)
 {
     int remaining = amount;
@@ -419,12 +429,15 @@ void noJam(int amount)
     end();
 }
 
+// [Web command] move the auger
 int auger(String command)
 {
+    // make sure auger isn't disabled
     if (run == 1)
     {
         end();    
     }
+    // Normal commands
     if (command == "load")
     {
         Particle.publish("activity", "Loading");
@@ -434,17 +447,18 @@ int auger(String command)
     else if (command == "treat")
     {
         
-        treats(); //add for loop for amount
+        treats();
         last = Time.now();
         return 1;
     }
     else if (command == "meal")
     {
         
-        meals(); //add for loop for amount
+        meals();
         last = Time.now();
         return 1;
     }
+    // Debugging commands
     else if (command == "out")
     {
         run = 1;
@@ -498,10 +512,13 @@ int auger(String command)
     return 1;
 }
 
+// [Web command] set treat sizes
 int setSizes(String type0size)
 {
     String type;
     String size;
+    // Size comes in as a string with variables separated by commas
+    // This converts the strings into appropriate variables
     for (int i = 0; i < type0size.length(); i++) {
       if (type0size.substring(i, i+1) == ",") {
         type = type0size.substring(0, i);
@@ -530,10 +547,13 @@ int setSizes(String type0size)
 #                  Interval Functions
 #
 ##################################################*/
+// [Web command] Set the interval settings
 int setInterval(String command0setting)
 {
     String command;
     String setting;
+    // command and setting comes in as a string with variables separated by commas
+    // This converts the strings into appropriate variables
     for (int i = 0; i < command0setting.length(); i++) {
       if (command0setting.substring(i, i+1) == ",") {
         command = command0setting.substring(0, i);
@@ -590,11 +610,13 @@ int setInterval(String command0setting)
 #                  Schedule Functions
 #
 ##################################################*/
-
+// [Web command] Set schedule settings
 int setSchedule(String command0setting)
 {
     String command;
     String setting;
+    // command and setting comes in as a string with variables separated by commas
+    // This converts the strings into appropriate variables
     for (int i = 0; i < command0setting.length(); i++) {
       if (command0setting.substring(i, i+1) == ",") {
         command = command0setting.substring(0, i);
@@ -692,8 +714,11 @@ int setSchedule(String command0setting)
 #
 ##################################################*/
 
+// [Web command] Set debugging settings
 int setDebug(String type0command0setting)
 {
+    // command and setting comes in as a string with variables separated by commas
+    // This converts the strings into appropriate variables
     int commaIndex = type0command0setting.indexOf(',');
     int secondCommaIndex = type0command0setting.indexOf(',', commaIndex + 1);
     String type = type0command0setting.substring(0, commaIndex);
@@ -779,6 +804,7 @@ int setDebug(String type0command0setting)
 #                  Bark Functions
 #
 ##################################################*/
+// Track barks - function is called by Netcam webcam, not web app
 int bark(String command)
 {
     if (command == "increase")
