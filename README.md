@@ -57,6 +57,8 @@ These are the 3D-printed parts for the auger, which is used to dispense the trea
   * Number of web variables - It would be nice to be able to track more.
     * I mostly overcame this limitation by rolling multiple variables into single `char` pointers
   * Number of features - More efficient code might allow for more
+* Photon variables reset to defaults on power reset
+  * This can be mitigated by storing them in the web database and having the Photon request them on startup
 
 ## To-Do
 
@@ -68,3 +70,4 @@ These are the 3D-printed parts for the auger, which is used to dispense the trea
 ## Needs to be done, but won't be unless I pick the project back up
 
 - [ ] 3D print a gravity-fed system
+- [ ] Store variable values in web database and have Photon request them at startup
