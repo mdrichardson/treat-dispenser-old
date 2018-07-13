@@ -1,0 +1,15 @@
+<link rel="manifest" href="./manifest.json">
+<div class="button secondary disabled expand" style="color:black !important; font-size:0.8em">Food last given: {{last}}</div>
+<div class="grid-block align-center">
+    <center>
+        <div class="flex-video grid-content" style="overflow:hidden">
+        <video muted id="video_0" ng-src="{{loadVideo() | trust}}" type="video/ogg" autoplay="autoplay"  width="100%" preload="none" controls/>
+        </div>
+        <br>
+        <br>
+    </center>
+</div>
+<ul class="button-group large expand"> 
+    <li><button type="button" class="secondary button auger" ng-click="meal()">Give Meal</button></li>
+    <li><button type="button" class="button auger" ng-click="treat()">Give Treat</button></li>
+</ul>

@@ -1,0 +1,325 @@
+<link rel="manifest" href="./manifest.json">
+<center>
+    <h1>Settings</h1>
+<div class="grid-container" ng-show="!showSettings()">
+    <p style="color:red">Must be connected in order to change settings.</p>
+</div>
+</center>
+<div class="grid-container" ng-show="showSettings()">
+    <br>
+    <br>
+    <div class="grid-block" id="notToggleable">
+        <div class="grid-block small-2" id="togglePlaceholder">
+        </div>
+        <div class="grid-block small-10" id="settings">
+            <div class="grid-content" style="overflow:hidden">
+                <h4>Proportions</h4>
+                <h5>Treat Size</h5>
+                <span id="treat0" ng-click="treat('0')">  S  </span><span id="treat1" ng-click="treat('1')">  M  </span><span id="treat2" ng-click="treat('2')">  L  </span>
+                <br>
+                <h5>Meal Size</h5>
+                <span id="meal0" ng-click="meal('0')">  S  </span><span id="meal1" ng-click="meal('1')">  M  </span><span id="meal2" ng-click="meal('2')">  L  </span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="grid-block align-center">
+        <div class="grid-block small-2 vertical">
+            <div class="large switch">
+                <input type="checkbox" ng-model="intervalToggle" id="intervalToggle" ng-click="toggleInterval()">
+                <label for="intervalToggle"></label>
+            </div>
+        </div>
+        <div class="grid-block small-10">
+        <input mdc-datetime-picker="" date="false" time="true" type="text" id="time" short-time="true"
+placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" md-input"
+readonly="readonly">
+            <div class="grid-block vertical">        
+                <h4>Interval Treat Dispensing</h4>
+                <div class="grid-block wrap" style="overflow:hidden">
+                <div><input type="radio" ng-model="intervalSEon" value="0" ng-click="interval('SEon,0')"><label>Run continuously</label></div>
+                <div><input type="radio" ng-model="intervalSEon" value="1" ng-click="interval('SEon,1')"><label>Run during specific time period</label></div>
+                </div>
+                <br>
+                <div class="grid-block vertical" style="padding-left:5%" ng-if="showIntervalSelect()">
+                    <div class="grid-block vertical">
+                        <div class="grid-block clockpicker">
+                            <div class="grid-block shrink small-3"><h5>Start&nbsp&nbsp&nbsp</h5><input value="" data-default="20:48" id="intervalStartClock" ng-model="intervalStartClock" ng-change="console.log('change')" /></div>
+                        </div>
+                        <div class="grid-block">
+                            <div class="grid-block shrink small-3"><h5>End&nbsp&nbsp&nbsp&nbsp</h5><input type="text" id="intervalEndClock" ng-model="intervalEndClock"/></div>
+                        </div>
+                    
+                    </div>
+                        <div class="grid-block">
+                        <h5>Start</h5>
+                            <div class="grid-block" style="padding-left:5%">
+                                <div>
+                                    <label>Hr</label>
+                                    <select name="" ng-model="intervalStartHours" ng-change="intervalSE('start', 'hours',intervalStartHours)">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Min</label>
+                                    <select name="" ng-model="intervalStartMinutes" ng-change="intervalSE('start', 'minutes',intervalStartMinutes)">
+                                    <option>00</option>
+                                    <option>15</option>
+                                    <option>30</option>
+                                    <option>45</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>AM/PM</label>
+                                    <select name="" ng-model="intervalStartAMPM" ng-change="intervalSE('start', 'ampm',intervalStartAMPM)">
+                                    <option>AM</option>
+                                    <option>PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    <div class="grid-block vertical">
+                        <div class="grid-block">
+                        <h5>End&nbsp;</h5>
+                            <div class="grid-block" style="padding-left:5%">
+                                <div>
+                                    <label>Hr</label>
+                                    <select name="" ng-model="intervalEndHours" ng-change="intervalSE('end','hours',intervalEndHours)">
+                                    <option>1</option>
+                                    <option>2</option>
+                                    <option>3</option>
+                                    <option>4</option>
+                                    <option>5</option>
+                                    <option>6</option>
+                                    <option>7</option>
+                                    <option>8</option>
+                                    <option>9</option>
+                                    <option>10</option>
+                                    <option>11</option>
+                                    <option>12</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>Min</label>
+                                    <select name="" ng-model="intervalEndMinutes" ng-change="intervalSE('end','minutes',intervalEndMinutes)">
+                                    <option>00</option>
+                                    <option>15</option>
+                                    <option>30</option>
+                                    <option>45</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label>AM/PM</label>
+                                    <select name="" ng-model="intervalEndAMPM" ng-change="intervalSE('end','ampm',intervalEndAMPM)">
+                                    <option>AM</option>
+                                    <option>PM</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                        <div class="grid-block" style="padding-left:5%">
+                        <p>Dispense treat every: </p>
+                            <div>
+                                <label>Hr</label>
+                                <select name="" ng-model="intervalHours" ng-change="intervalTime('hours',intervalHours)">
+                                <option>0</option>
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                                </select>
+                            </div>
+                        <div>
+                            <label>Min</label>
+                            <select name="" ng-model="intervalMinutes" ng-change="intervalTime('minutes',intervalMinutes)">
+                            <option>0</option>
+                            <option>5</option>
+                            <option>15</option>
+                            <option>30</option>
+                            <option>45</option>
+                            </select>
+                        </div>
+                        </div>
+                <p style="color:red" id="intervalAlert"></p>
+                <br>
+            </div>
+        </div>
+    </div>
+    <div class="grid-block align-center">
+        <div class="grid-block small-2 vertical">
+            <div class="large switch">
+                <input type="checkbox" ng-model="scheduleToggle" id="scheduleToggle" ng-click="toggleSchedule()">
+                <label for="scheduleToggle"></label>
+            </div>
+        </div>
+        <div class="grid-block small-10">
+            <div class="grid-block vertical">        
+                <h4>Scheduled Meal Dispensing</h4>
+                <p>Dispense meal on:</p>
+                <div class="grid-block align-left" style="padding-left:5%; overflow:hidden">
+                    <div class="grid-block vertical shrink">
+                    <div><input id="schedSun" ng-model="schedSun" type="checkbox"><label for="schedSun">Sunday</label></div>
+                    <div><input id="schedMon" ng-model="schedMon" type="checkbox"><label for="schedMon">Monday</label></div>
+                    <div><input id="schedTue" ng-model="schedTue" type="checkbox"><label for="schedTue">Tuesday</label></div>
+                    <div><input id="schedWed" ng-model="schedWed" type="checkbox"><label for="schedWed">Wednesday</label></div>
+                    </div>
+                    <div class="grid-block vertical">
+                    <div><input id="schedThu" ng-model="schedThu" type="checkbox"><label for="schedThu">Thursday</label></div>
+                    <div><input id="schedFri" ng-model="schedFri" type="checkbox"><label for="schedFri">Friday</label></div>
+                    <div><input id="schedSat" ng-model="schedSat" type="checkbox"><label for="schedSat">Saturday</label></div>
+                    </div>
+                </div>
+                <br>
+                <p>At:</p>
+                <div class="grid-block align-justify vertical" style="padding-left:5%">
+                    <div class="grid-block vertical">
+                        <h5><span class="small switch">
+                            <input type="checkbox" ng-model="schedTime1Toggle" id="schedTime1Toggle" ng-click="toggleSchedTime1()">
+                            <label for="schedTime1Toggle"></label>
+                        </span>&nbsp;Time 1</h5>
+                        <div class="grid-block" style="padding-left:5%">
+                            <div>
+                                <label>Hr</label>
+                                <select name="" ng-model="schedTime1Hours">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Min</label>
+                                <select name="" ng-model="schedTime1Minutes">
+                                <option>00</option>
+                                <option>15</option>
+                                <option>30</option>
+                                <option>45</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>AM/PM</label>
+                                <select name="" ng-model="schedTime1AMPM">
+                                <option>AM</option>
+                                <option>PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-block vertical">
+                        <h5><span class="small switch">
+                            <input type="checkbox" ng-model="schedTime2Toggle" id="schedTime2Toggle" ng-click="toggleSchedTime2()">
+                            <label for="schedTime2Toggle"></label>
+                        </span>&nbsp;Time 2</h5>
+                        <div class="grid-block" style="padding-left:5%">
+                            <div>
+                                <label>Hr</label>
+                                <select name="" ng-model="schedTime2Hours">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Min</label>
+                                <select name="" ng-model="schedTime2Minutes">
+                                <option>00</option>
+                                <option>15</option>
+                                <option>30</option>
+                                <option>45</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>AM/PM</label>
+                                <select name="" ng-model="schedTime2AMPM">
+                                <option>AM</option>
+                                <option>PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="grid-block vertical">
+                        <h5><span class="small switch">
+                            <input type="checkbox" ng-model="schedTime3Toggle" id="schedTime3Toggle" ng-click="toggleSchedTime3()">
+                            <label for="schedTime3Toggle"></label>
+                        </span>&nbsp;Time 3</h5>
+                        <div class="grid-block" style="padding-left:5%">
+                            <div>
+                                <label>Hr</label>
+                                <select name="" ng-model="schedTime3Hours">
+                                <option>1</option>
+                                <option>2</option>
+                                <option>3</option>
+                                <option>4</option>
+                                <option>5</option>
+                                <option>6</option>
+                                <option>7</option>
+                                <option>8</option>
+                                <option>9</option>
+                                <option>10</option>
+                                <option>11</option>
+                                <option>12</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>Min</label>
+                                <select name="" ng-model="schedTime3Minutes">
+                                <option>00</option>
+                                <option>15</option>
+                                <option>30</option>
+                                <option>45</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label>AM/PM</label>
+                                <select name="" ng-model="schedTime3AMPM">
+                                <option>AM</option>
+                                <option>PM</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

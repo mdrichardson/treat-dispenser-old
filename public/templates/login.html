@@ -1,0 +1,18 @@
+<center>
+<br>
+<br>
+<h2>Login</h2>
+<br>
+<div class="grid-content small-10 medium-4 large-3">
+{{message}}
+<br>
+<br>
+  <form>
+      <input class="form-control" type="text" name="user" ng-model="user" placeholder="email" ng-disabled="loading" />
+      <br>
+      <input class="form-control" type="password" name="pass" ng-model="pass" placeholder="password" ng-disabled="loading" />
+      <br>
+      <button class="button primary expand" type="submit" ng-disabled="loading" ng-click="login()">Login</button>
+  </form>
+</div>
+</center>

@@ -1,0 +1,34 @@
+<link rel="manifest" href="./manifest.json">
+<center>
+    <div class="grid-container align-center">
+        <h1>Debug</h1>
+        <br>
+        <div class="grid-container">
+            <button type="button" class="button large expand auger" ng-click="load()"><img zf-iconic="" icon="reload" size="small">Load Dispenser</button>
+            <br>
+            <br>
+            <br>
+            <div class="show-for-medium">
+            <ul class="grid-container button-group expand large">
+                <li><button type="button" class="button info" ng-click="in()"><img zf-iconic="" icon="chevron" data-direction="left" size="small">In</button></li>
+                <li><button type="button" class="button info" ng-click="inout()"><img zf-iconic="" icon="chevron" data-direction="right" size="small">In/Out <img zf-iconic="" icon="chevron" data-direction="left" size="small"></button></li>
+                <li><button type="button" class="button info" ng-click="out()">Out <img zf-iconic="" icon="chevron" data-direction="right" size="small"></button></li>
+            </ul>
+            <button type="button" class="button alert large expand" ng-click="stop()"><img zf-iconic="" icon="ban" size="small">Stop</button>
+            </div>
+            <div class="show-for-small-only">
+            <ul class="grid-container button-group expand">
+                <li><button type="button" class="button info" ng-click="in()"><img zf-iconic="" icon="chevron" data-direction="left" size="small">In</button></li>
+                <li><button type="button" class="button info" ng-click="inout()"><img zf-iconic="" icon="chevron" data-direction="right" size="small">In/Out <img zf-iconic="" icon="chevron" data-direction="left" size="small"></button></li>
+                <li><button type="button" class="button info" ng-click="out()">Out <img zf-iconic="" icon="chevron" data-direction="right" size="small"></button></li>
+            </ul>
+            <button type="button" class="button alert expand" ng-click="stop()"><img zf-iconic="" icon="ban" size="small">Stop</button>
+            </div>
+            <br>
+            <br>
+            <br>
+            <button type="button" class="button warning large expand auger" ng-click="test()"><img zf-iconic="" icon="magnifying-glass" size="small">Test</button>
+            <button type="button" class="button secondary large expand auger" ng-click="tone()"><img zf-iconic="" icon="bell" size="small">Play Tone</button>
+        </div>
+    </div>
+</center>
