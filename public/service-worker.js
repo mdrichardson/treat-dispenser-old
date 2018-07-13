@@ -1,6 +1,9 @@
+// This is currently commented out for PWA debugging purposes
+
 /*var cacheName = 'treatDispenser-1';
 var filesToCache = [];
 
+// Install the worker
 self.addEventListener('install', function(e) {
   console.log('[ServiceWorker] Install');
   e.waitUntil(
@@ -11,6 +14,7 @@ self.addEventListener('install', function(e) {
   );
 });
 
+// Activate the worker
 self.addEventListener('activate', function(e) {
   console.log('[ServiceWorker] Activate');
   e.waitUntil(
@@ -25,6 +29,7 @@ self.addEventListener('activate', function(e) {
   );
 });
 
+// Cache all the assets that don't change much
 var filesToCache = [
     '/',
     '/index.html',
@@ -61,6 +66,7 @@ var filesToCache = [
     '/templates/settings.html'
 ];
 
+// Fetch all the cached assets
 self.addEventListener('fetch', function(e) {
   console.log('[ServiceWorker] Fetch', e.request.url);
   e.respondWith(
