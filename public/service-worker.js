@@ -1,6 +1,6 @@
-// This is currently commented out for PWA debugging purposes
+// This is a service worker for making the app progressive and enabling caching
 
-/*var cacheName = 'treatDispenser-1';
+var cacheName = 'treatDispenser-1';
 var filesToCache = [];
 
 // Install the worker
@@ -74,4 +74,4 @@ self.addEventListener('fetch', function(e) {
       return response || fetch(e.request);
     })
   );
-});*/
+});
