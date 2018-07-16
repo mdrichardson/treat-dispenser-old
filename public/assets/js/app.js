@@ -129,7 +129,7 @@
     // Play webcam video
     $scope.loadVideo = function() {
         var userProfile = store.get('profile');
-        return "https://xxxxx:##/live/0?authToken=" + userProfile.user_metadata.videoAuthToken; // Need to replace with ip address from user database, once created
+        return userProfile.user_metadata.videoURL + userProfile.user_metadata.videoAuthToken; // This will be different for non-Netcam users
     };
     $scope.getLast();
     $interval(function(){
@@ -177,7 +177,7 @@
         if ($rootScope.status == "Connected") {
             return true;
         } else {
-            return false; // Set to return true for testing purposes
+            return true; // Set to return true for testing purposes, false otherwise
         }
     };
     // Update Interval settings
@@ -488,8 +488,8 @@
     $locationProvider.hashPrefix('!');
       
     authProvider.init({
-      domain: 'syndac.auth0.com',
-      clientID: 'TC1odA500q6xYJNYY6es1axmnPHEkqcl',
+      domain: 'mdrichardson.auth0.com',
+      clientID: 'RwemO0j428onYQYPbR5iBUyaaQ9ERJ53',
       loginState: 'login'
     });
     
