@@ -571,10 +571,10 @@
     }
   });
   }
-// ServiceWorker for progressive web app
-   if ('serviceWorker' in navigator) {
+// ServiceWorker for progressive web app -- Currently disabled for testing
+   /*if ('serviceWorker' in navigator) {
     navigator.serviceWorker
              .register('./service-worker.js')
              .then(function() { console.log('Service Worker Registered'); });
-  }
+  }*/
 })();

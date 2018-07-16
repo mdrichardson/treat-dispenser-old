@@ -6,7 +6,7 @@ This is a progressive web app used to control the Particle Photon treat dispense
 
 After no longer using the treat dispenser, I took it offline and deleted my Auth0 account. It currently does not function well without it, since it will only display a login page. I'm working on getting it up and running with my own database.
 
-A lot of the code is stock Foundation. Mine can be found in [app.js](https://github.com/mdrichardson/treat-dispenser/blob/master/public/assets/js/app.js), [the templates folder](https://github.com/mdrichardson/treat-dispenser/tree/master/public/templates), and [serviceworker.js](https://github.com/mdrichardson/treat-dispenser/blob/master/public/service-worker.js).
+The best examples of *my* code are in [app.js](https://github.com/mdrichardson/treat-dispenser/blob/master/public/assets/js/app.js), [the templates folder](https://github.com/mdrichardson/treat-dispenser/tree/master/public/templates), and [serviceworker.js](https://github.com/mdrichardson/treat-dispenser/blob/master/public/service-worker.js).
 
 ## Features
 
