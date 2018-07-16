@@ -24,28 +24,28 @@
 .factory('variableService', ['$http', 'NotificationFactory', function($http, NotificationFactory) {
     // Get access token from Auth0 account
     var accessToken = function(){
-        //store.get('profile'); -- NEED TO RESET TOKENS ONCE MERGED TO MASTER
+        //store.get('profile');
         var profile =
             {
                 user_metadata: {
-                    particleDevice_ID: "380043000d47343432313031",
-                    particleAccessToken: "d62317fe4e09d30da4bcb57de2249ff234f10736",
+                    particleDevice_ID: "",
+                    particleAccessToken: "",
                     videoURL: "https://localhost:8100/live/0?authToken=",
-                    videoAuthToken: "b4dea4cd-ac89-4f75-a62e-9d24f9008ad5"
+                    videoAuthToken: ""
                 }
             }
         return profile.user_metadata.particleAccessToken;
     };
     // Get Photon ID from Auth0 account
     var apiURL = function() {
-        //store.get('profile'); -- NEED TO RESET TOKENS ONCE MERGED TO MASTER
+        //store.get('profile');
         var profile =
             {
                 user_metadata: {
-                    particleDevice_ID: "380043000d47343432313031",
-                    particleAccessToken: "d62317fe4e09d30da4bcb57de2249ff234f10736",
+                    particleDevice_ID: "",
+                    particleAccessToken: "",
                     videoURL: "https://localhost:8100/live/0?authToken=",
-                    videoAuthToken: "b4dea4cd-ac89-4f75-a62e-9d24f9008ad5"
+                    videoAuthToken: ""
                 }
             }
         if (profile != null) {
@@ -106,14 +106,14 @@
 }])
   // Home page controller
   .controller('homeCtrl', ['$scope', '$interval', '$sce', 'variableService', function($scope, $interval, $sce, variableService) {  
-    //store.get('profile'); -- NEED TO RESET TOKENS ONCE MERGED TO MASTER
+    //store.get('profile');
     $scope.userProfile =
     {
         user_metadata: {
-            particleDevice_ID: "380043000d47343432313031",
-            particleAccessToken: "d62317fe4e09d30da4bcb57de2249ff234f10736",
+            particleDevice_ID: "",
+            particleAccessToken: "",
             videoURL: "https://localhost:8100/live/0?authToken=",
-            videoAuthToken: "b4dea4cd-ac89-4f75-a62e-9d24f9008ad5"
+            videoAuthToken: ""
         }
     }
     moment().format("hh:mm:ss");
@@ -151,14 +151,14 @@
     };
     // Play webcam video
     $scope.loadVideo = function() {
-        //store.get('profile'); -- NEED TO RESET TOKENS ONCE MERGED TO MASTER
+        //store.get('profile');
         var userProfile =
             {
                 user_metadata: {
-                    particleDevice_ID: "380043000d47343432313031",
-                    particleAccessToken: "d62317fe4e09d30da4bcb57de2249ff234f10736",
+                    particleDevice_ID: "",
+                    particleAccessToken: "",
                     videoURL: "https://localhost:8100/live/0?authToken=",
-                    videoAuthToken: "b4dea4cd-ac89-4f75-a62e-9d24f9008ad5"
+                    videoAuthToken: ""
                 }
             }
         return userProfile.user_metadata.videoURL + userProfile.user_metadata.videoAuthToken; // This will be different for non-Netcam users

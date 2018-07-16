@@ -2,6 +2,8 @@
 
 This is a dog treat dispenser that dispenses treats based off of input from a progressive web app, time intervals, and or feeding schedule. The dispenser, itself, is based loosely off of [this model.](https://www.thingiverse.com/thing:27854)
 
+**Note: This previously used [Auth0](http://www.auth0.com) for user authentication and metadata storage. Since re-uploading this app, Auth0 deprecated the authorization process used and quite a bit of work is required to get it back. On the current live site, this uses Basic Authentication. Some of the old Auth0 code is still in `app.js` for easier transitioning into the up-to-date auth process.**
+
 ## TreatDispenser.ino
 
 This is the code executed on a Particle Photon (similar to an Arduino--uses C/C++).
