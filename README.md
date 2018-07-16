@@ -63,9 +63,10 @@ These are the 3D-printed parts for the auger, which is used to dispense the trea
 ## To-Do
 
 - [X] Comment the web app code
-- [ ] Host the web app again (I took it down and deleted Auth0 account after no longer using it)
+- [X] Host the web app again -- I took it down and deleted Auth0 account after no longer using it
+- [ ] Re-write the app in Angular -- Removing [Auth0](http://www.auth0.com) makes a re-write pretty much necessary anyway
+- [ ] Replace basic authentication with own user authentication database -- I removed authentication because auth0 no longer supports the legacy auth0 authentication the app *was* using
 - [ ] Simplify the Photon code. Scheduling features aren't really necessary.
-- [ ] Write my own user authentication database (currently uses [Auth0](http://www.auth0.com))
 
 ## Needs to be done, but won't be unless I pick the project back up
 

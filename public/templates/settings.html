@@ -32,9 +32,6 @@
             </div>
         </div>
         <div class="grid-block small-10">
-        <input mdc-datetime-picker="" date="false" time="true" type="text" id="time" short-time="true"
-placeholder="Time" min-date="minDate" format="hh:mm a" ng-model="time" class=" md-input"
-readonly="readonly">
             <div class="grid-block vertical">        
                 <h4>Interval Treat Dispensing</h4>
                 <div class="grid-block wrap" style="overflow:hidden">
@@ -44,11 +41,11 @@ readonly="readonly">
                 <br>
                 <div class="grid-block vertical" style="padding-left:5%" ng-if="showIntervalSelect()">
                     <div class="grid-block vertical">
-                        <div class="grid-block clockpicker">
+                        <div class="grid-block">
                             <div class="grid-block shrink small-3"><h5>Start&nbsp&nbsp&nbsp</h5><input value="" data-default="20:48" id="intervalStartClock" ng-model="intervalStartClock" ng-change="console.log('change')" /></div>
                         </div>
                         <div class="grid-block">
-                            <div class="grid-block shrink small-3"><h5>End&nbsp&nbsp&nbsp&nbsp</h5><input type="text" id="intervalEndClock" ng-model="intervalEndClock"/></div>
+                            <div class="grid-block shrink small-3"><h5>End&nbsp&nbsp&nbsp&nbsp</h5><input value="" data-default="20:48" id="intervalEndClock" ng-model="intervalEndClock" ng-change="console.log('change')" /></div>
                         </div>
                     
                     </div>
