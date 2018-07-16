@@ -9,13 +9,11 @@
     'foundation',
     'foundation.dynamicRouting',
     'foundation.dynamicRouting.animations',
-      
-    //auth0
-    'auth0',
-    'angular-storage',
-    'angular-jwt',
-
   ])
+
+  .config(config)
+  .run(run)
+
 .filter('trust', ['$sce', function ($sce) {
     return function(url) {
         return $sce.trustAsResourceUrl(url);
@@ -23,22 +21,39 @@
 }])
 
 // Factory for interacting with Photon
-.factory('variableService', ['$http', 'NotificationFactory', '$rootScope', 'store', function($http, NotificationFactory, $rootScope, store) {
+.factory('variableService', ['$http', 'NotificationFactory', function($http, NotificationFactory) {
     // Get access token from Auth0 account
     var accessToken = function(){
-        var profile = store.get('profile');
+        //store.get('profile'); -- NEED TO RESET TOKENS ONCE MERGED TO MASTER
+        var profile =
+            {
+                user_metadata: {
+                    particleDevice_ID: "380043000d47343432313031",
+                    particleAccessToken: "d62317fe4e09d30da4bcb57de2249ff234f10736",
+                    videoURL: "https://localhost:8100/live/0?authToken=",
+                    videoAuthToken: "b4dea4cd-ac89-4f75-a62e-9d24f9008ad5"
+                }
+            }
         return profile.user_metadata.particleAccessToken;
     };
     // Get Photon ID from Auth0 account
     var apiURL = function() {
-        var profile = store.get('profile');
+        //store.get('profile'); -- NEED TO RESET TOKENS ONCE MERGED TO MASTER
+        var profile =
+            {
+                user_metadata: {
+                    particleDevice_ID: "380043000d47343432313031",
+                    particleAccessToken: "d62317fe4e09d30da4bcb57de2249ff234f10736",
+                    videoURL: "https://localhost:8100/live/0?authToken=",
+                    videoAuthToken: "b4dea4cd-ac89-4f75-a62e-9d24f9008ad5"
+                }
+            }
         if (profile != null) {
             return "https://api.particle.io/v1/devices/" + profile.user_metadata.particleDevice_ID + "/";
         }        
     }
     // Get variable values from the Photon
     var getVariable = function(getVar) {
-        var userProfile = store.get('profile');
         return $http.get(apiURL()+  getVar + '?access_token=' + accessToken()).then(function (data) {
         return data.data.result;   
     }, function (err) {
@@ -48,7 +63,6 @@
     };
     // Call Photon functions
     var functionCall = function functionCall(functionName, functionArg) {
-        var userProfile = store.get('profile');
         if (functionName == 'auger'){
             $(".button.auger").addClass('disabled');
         }
@@ -59,11 +73,11 @@
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 })
                 // Disable/Enable auger function while auger is/not in use
-                .success(function(data, status, headers, config) {
+                .success(function() {
                     console.log(functionName + ' performed succesfully: ' + functionArg);
                     $(".button.auger").removeClass('disabled');
                 })
-                .error(function(data, status, headers, config) {
+                .error(function() {
                     console.log('An error occurred while getting variable: ', err);
                     $(".button.auger").removeClass('disabled');
                 });
@@ -91,8 +105,17 @@
     };
 }])
   // Home page controller
-  .controller('homeCtrl', ['$scope', '$rootScope', '$state', '$interval', '$sce', 'variableService', 'store', function($scope, $rootScope, $state, $interval, $sce, variableService, store) {
-    $scope.userProfile = store.get('profile');
+  .controller('homeCtrl', ['$scope', '$interval', '$sce', 'variableService', function($scope, $interval, $sce, variableService) {  
+    //store.get('profile'); -- NEED TO RESET TOKENS ONCE MERGED TO MASTER
+    $scope.userProfile =
+    {
+        user_metadata: {
+            particleDevice_ID: "380043000d47343432313031",
+            particleAccessToken: "d62317fe4e09d30da4bcb57de2249ff234f10736",
+            videoURL: "https://localhost:8100/live/0?authToken=",
+            videoAuthToken: "b4dea4cd-ac89-4f75-a62e-9d24f9008ad5"
+        }
+    }
     moment().format("hh:mm:ss");
     // Update last treat dispense time
     $scope.getLast = function() {
@@ -128,7 +151,16 @@
     };
     // Play webcam video
     $scope.loadVideo = function() {
-        var userProfile = store.get('profile');
+        //store.get('profile'); -- NEED TO RESET TOKENS ONCE MERGED TO MASTER
+        var userProfile =
+            {
+                user_metadata: {
+                    particleDevice_ID: "380043000d47343432313031",
+                    particleAccessToken: "d62317fe4e09d30da4bcb57de2249ff234f10736",
+                    videoURL: "https://localhost:8100/live/0?authToken=",
+                    videoAuthToken: "b4dea4cd-ac89-4f75-a62e-9d24f9008ad5"
+                }
+            }
         return userProfile.user_metadata.videoURL + userProfile.user_metadata.videoAuthToken; // This will be different for non-Netcam users
     };
     $scope.getLast();
@@ -150,12 +182,12 @@
     
   }])
   // Status bar controller - Tracks current status of Photon
-  .controller('statusCtrl', ['$scope', '$rootScope', '$state', 'variableService', function($scope, $rootScope, $state, variableService) {
+  .controller('statusCtrl', ['$rootScope', function($rootScope) {
     $rootScope.status = 'Connecting...';
-    $rootScope.activity = 'Idle';      
+    $rootScope.activity = 'Idle';  
   }])
   // Settings page controller
-   .controller('settingsCtrl', ['$scope', '$rootScope', '$state', '$timeout', 'variableService', function($scope, $rootScope, $state, $timeout, variableService) {
+   .controller('settingsCtrl', ['$scope', '$rootScope', 'variableService', function($scope, $rootScope, variableService) {
     // Update variables from Photon and apply CSS badges, appropriately
     $scope.getSizes = function() {
         variableService.getVariable("sizes").then(function (data) {
@@ -177,7 +209,7 @@
         if ($rootScope.status == "Connected") {
             return true;
         } else {
-            return true; // Set to return true for testing purposes, false otherwise
+            return false; // Set to return true for testing purposes, false otherwise
         }
     };
     // Update Interval settings
@@ -408,7 +440,7 @@
     $scope.getIntervals();
   }])
   // Debug controller
-  .controller('debugCtrl', ['$scope', '$state', 'variableService', function($scope, $state, variableService) {
+  .controller('debugCtrl', ['$scope', 'variableService', function($scope, variableService) {
     // Functions are pretty self-explanatory
     $scope.load = function() {
       variableService.functionCall("auger","load");
@@ -441,52 +473,10 @@
   }])
 
 // Login Controller - currently uses auth0
-  .controller('loginCtrl', ['$scope', 'auth', 'store', function ($scope, auth, store) {
-    $scope.login = function () {
-    // Prior to login
-    $scope.message = 'loading...';
-    $scope.loading = true;
-    // Login
-     auth.signin({
-         sso: false,
-         connection: 'TreatDispenserDB',
-         username: $scope.user,
-         password: $scope.pass,
-         authParams: {
-           scope: 'openid name email'
-         }
-        }, onLoginSuccess, onLoginFailed);
-    };
-    // If login successful, set user variables
-    function onLoginSuccess(profile, token) {
-      $scope.message = '';
-      store.set('profile', profile);
-      store.set('token', token);
-      $scope.userProfile = profile;    
-      $scope.loading = false;    
-    }
-    // If not successful, alert user
-    function onLoginFailed() {
-      $scope.message.text = 'invalid credentials';
-      $scope.loading = false;
-    }
+  .controller('loginCtrl', ['$scope', function ($scope) {
   }])
-  
-    .config(config)
-    .run(run);
 
-  config.$inject = ['$urlRouterProvider', '$locationProvider', 'authProvider'];
-
-  function config($urlProvider, $locationProvider, authProvider) {
-    $urlProvider.otherwise('/');
-
-    $locationProvider.html5Mode({
-      enabled:true,
-      requireBase: false
-    });
-
-    $locationProvider.hashPrefix('!');
-      
+    /* OLD AUTH0 CONFIG FUNCTION
     authProvider.init({
       domain: 'mdrichardson.auth0.com',
       clientID: 'RwemO0j428onYQYPbR5iBUyaaQ9ERJ53',
@@ -547,12 +537,9 @@
             });
     }]);  
   }
-  
-  run.$inject = ['$rootScope', 'auth', 'store', 'jwtHelper']  
-    
-  function run($rootScope, auth, store, jwtHelper, $location) {
-    FastClick.attach(document.body);
-    $rootScope.$on('$locationChangeStart', function() {
+  */
+//   run.$inject = ['$rootScope'] 
+        /* OLD AUTH0 RUN FUNCTIONS
     // Grab the user's token
     var token = store.get('token');
     // Check if token was actually stored
@@ -568,13 +555,41 @@
         // Either show the login page
         $location.path('/login');
       }
-    }
-  });
-  }
+      
+    } */
+//     }]);
+//   }
 // ServiceWorker for progressive web app -- Currently disabled for testing
    /*if ('serviceWorker' in navigator) {
     navigator.serviceWorker
              .register('./service-worker.js')
              .then(function() { console.log('Service Worker Registered'); });
   }*/
+  config.$inject = ['$urlRouterProvider', '$locationProvider'];
+  run.$inject = ['$rootScope', 'variableService'];
+
+  
+  function config($urlProvider, $locationProvider) {
+        $urlProvider.otherwise('/');
+
+        $locationProvider.html5Mode({
+        enabled:true,
+        requireBase: false
+        });
+
+        $locationProvider.hashPrefix('!');
+        }
+    function run($rootScope, variableService) {
+        FastClick.attach(document.body);
+        var source = new EventSource(variableService.apiURL() + "events/?access_token=" + variableService.accessToken());
+        source.addEventListener("status", function(event) {
+            event = JSON.parse(event.data);
+            $rootScope.status = event.data;
+        });
+        source.addEventListener("activity", function(event) {
+            event = JSON.parse(event.data);
+            $rootScope.activity = event.data;
+            console.log("Activity: " + $rootScope.activity);
+            });
+        }
 })();
